@@ -1,29 +1,66 @@
 let currentPlayer = 1;
-let scores = {
+const scores = {
     1: { saved: 0, current: 0 },
-    2: { saved: 0, current: 0 } 
-    };
+    2: { saved: 0, current: 0 }
+};
+
 const dice = document.getElementById("dice");
+const winnerText = document.getElementById("winner");
+const playerNames = {
+    1: document.getElementById("name1"),
+    2: document.getElementById("name2")
+};
+
+const scoreElements = {
+    1: {
+        saved: document.getElementById("saved1"),
+        current: document.getElementById("current1")
+    },
+    2: {
+        saved: document.getElementById("saved2"),
+        current: document.getElementById("current2")
+    }
+};
 
 function rollDice() {
-    document.getElementById("name1").setAttribute("disabled", "true");
-    document.getElementById("name2").setAttribute("disabled", "true");
-    let roll = Math.floor(Math.random() * 6) + 1;
-    dice.src = `dice${roll}.png`;
-    if (roll === 1) {
-        scores[currentPlayer].current = 0;
-        switchTurn();
-    } else {
-        scores[currentPlayer].current += roll;
-    }
-    updateUI();
+    disableNameEditing();
+
+    // rolling effect for 1 second
+    let rollAnimationDuration = 1000;
+    // Change dice every 100ms
+    let rollInterval = 100; 
+    let rollingTime = 0;
+
+    let rollEffect = setInterval(() => {
+        let tempRoll = getRandomDiceRoll();
+        updateDiceImage(tempRoll);
+        rollingTime += rollInterval;
+
+        if (rollingTime >= rollAnimationDuration) {
+            // Stop rolling effect
+            clearInterval(rollEffect); 
+
+            let finalRoll = getRandomDiceRoll();
+            updateDiceImage(finalRoll);
+
+            if (finalRoll === 1) {
+                scores[currentPlayer].current = 0;
+                switchTurn();
+            } else {
+                scores[currentPlayer].current += finalRoll;
+            }
+            updateUI();
+        }
+    }, rollInterval);
 }
+
 
 function saveScore() {
     scores[currentPlayer].saved += scores[currentPlayer].current;
     scores[currentPlayer].current = 0;
+
     if (scores[currentPlayer].saved >= 100) {
-        document.getElementById("winner").textContent = document.getElementById(`name${currentPlayer}`).value + " Wins!";
+        declareWinner();
     } else {
         switchTurn();
     }
@@ -32,31 +69,59 @@ function saveScore() {
 
 function switchTurn() {
     currentPlayer = currentPlayer === 1 ? 2 : 1;
-}
-
-function updateUI() {
-    document.getElementById("saved1").textContent = scores[1].saved;
-    document.getElementById("current1").textContent = scores[1].current;
-    document.getElementById("saved2").textContent = scores[2].saved;
-    document.getElementById("current2").textContent = scores[2].current;
+    highlightCurrentPlayer();
 }
 
 function resetGame() {
     currentPlayer = 1;
-    scores = { 1: { saved: 0, current: 0 }, 2: { saved: 0, current: 0 } };
+    scores[1] = { saved: 0, current: 0 };
+    scores[2] = { saved: 0, current: 0 };
     dice.src = "dice1.png";
 
-    let name1 = document.getElementById("name1");
-    let name2 = document.getElementById("name2");
+    enableNameEditing();
+    resetNames();
+    winnerText.textContent = "";
 
-    name1.value = "Player 1";
-    name2.value = "Player 2";
-
-    name1.removeAttribute("disabled");
-    name2.removeAttribute("disabled");
-
-    document.getElementById("winner").textContent = "";
     updateUI();
+}
+
+function getRandomDiceRoll() {
+    return Math.floor(Math.random() * 6) + 1;
+}
+
+function updateDiceImage(roll) {
+    dice.src = `dice${roll}.png`;
+}
+
+function updateUI() {
+    for (let player of [1, 2]) {
+        scoreElements[player].saved.textContent = scores[player].saved;
+        scoreElements[player].current.textContent = scores[player].current;
+    }
+}
+
+function disableNameEditing() {
+    playerNames[1].setAttribute("disabled", "true");
+    playerNames[2].setAttribute("disabled", "true");
+}
+
+function enableNameEditing() {
+    playerNames[1].removeAttribute("disabled");
+    playerNames[2].removeAttribute("disabled");
+}
+
+function resetNames() {
+    playerNames[1].value = "Player 1";
+    playerNames[2].value = "Player 2";
+}
+
+function declareWinner() {
+    winnerText.textContent = `${playerNames[currentPlayer].value} Wins! 🎉`;
+}
+
+function highlightCurrentPlayer() {
+    document.getElementById("player1").style.opacity = currentPlayer === 1 ? "1" : "0.5";
+    document.getElementById("player2").style.opacity = currentPlayer === 2 ? "1" : "0.5";
 }
 
 document.getElementById("reset").addEventListener("click", resetGame);
