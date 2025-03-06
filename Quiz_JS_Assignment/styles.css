@@ -1,0 +1,104 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #6e45e2, #88d3ce);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Hide elements */
+.hidden {
+    display: none;
+}
+
+/* Quiz Container */
+.quiz-container {
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.quiz-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+/* Dropdowns & Labels */
+label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: left;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    background: #fff;
+    color: #333;
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    background: #ff4081;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    background: #e91e63;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 64, 129, 0.5);
+}
+
+/* Options */
+.option {
+    display: block;
+    margin: 8px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.option:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* Timer & Score */
+#timer, #current-score {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
